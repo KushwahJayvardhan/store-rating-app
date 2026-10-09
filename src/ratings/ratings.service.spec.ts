@@ -149,6 +149,7 @@ describe('RatingsService', () => {
       select: jest.fn().mockReturnThis(),
       andWhere: jest.fn().mockReturnThis(),
       orderBy: jest.fn().mockReturnThis(),
+      addOrderBy: jest.fn().mockReturnThis(),
       skip: jest.fn().mockReturnThis(),
       take: jest.fn().mockReturnThis(),
       getManyAndCount: jest.fn().mockResolvedValue([stores, 2]),
@@ -190,6 +191,7 @@ describe('RatingsService', () => {
       ['store.name ILIKE :name', { name: '%Store%' }],
       ['store.address ILIKE :address', { address: '%Address%' }],
     ]);
+    expect(storeQuery.addOrderBy.mock.calls[0]).toEqual(['store.id', 'ASC']);
     expect(ratingQuery.setParameter.mock.calls[0]).toEqual([
       'userId',
       'user-id',

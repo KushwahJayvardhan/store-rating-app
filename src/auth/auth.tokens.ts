@@ -1,3 +1,2 @@
 export const JWT_TOKEN_SIGNER = Symbol('JWT_TOKEN_SIGNER');
 export const AUTH_USER_REPOSITORY = Symbol('AUTH_USER_REPOSITORY');
-export const STORE_REPOSITORY = Symbol('STORE_REPOSITORY');

@@ -16,29 +16,29 @@ export class CreateAdminUserDto {
   @IsString()
   @MinLength(20)
   @MaxLength(60)
-  name: string;
+  name!: string;
 
   @Transform(({ value }: { value: unknown }) =>
     typeof value === 'string' ? value.trim().toLowerCase() : value,
   )
   @IsEmail()
   @MaxLength(255)
-  email: string;
+  email!: string;
 
   @Transform(({ value }: { value: unknown }) =>
     typeof value === 'string' ? value.trim() : value,
   )
   @IsString()
   @MaxLength(400)
-  address: string;
+  address!: string;
 
   @IsString()
   @Matches(/^(?=.*[A-Z])(?=.*[^A-Za-z0-9\s]).{8,16}$/, {
     message:
       'password must be 8-16 characters and contain an uppercase letter and a special character',
   })
-  password: string;
+  password!: string;
 
-  @IsIn([UserRole.NORMAL_USER, UserRole.SYSTEM_ADMIN])
-  role: UserRole.NORMAL_USER | UserRole.SYSTEM_ADMIN;
+  @IsIn([UserRole.NORMAL_USER, UserRole.SYSTEM_ADMIN, UserRole.STORE_OWNER])
+  role!: UserRole;
 }

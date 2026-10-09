@@ -14,14 +14,14 @@ export class CreateStoreDto {
   @IsString()
   @IsNotEmpty()
   @MaxLength(120)
-  name: string;
+  name!: string;
 
   @Transform(({ value }: { value: unknown }) =>
     typeof value === 'string' ? value.trim().toLowerCase() : value,
   )
   @IsEmail()
   @MaxLength(255)
-  email: string;
+  email!: string;
 
   @Transform(({ value }: { value: unknown }) =>
     typeof value === 'string' ? value.trim() : value,
@@ -29,8 +29,8 @@ export class CreateStoreDto {
   @IsString()
   @IsNotEmpty()
   @MaxLength(400)
-  address: string;
+  address!: string;
 
   @IsUUID()
-  ownerId: string;
+  ownerId!: string;
 }

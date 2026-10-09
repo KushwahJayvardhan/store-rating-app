@@ -35,7 +35,7 @@ describe('UsersService', () => {
     );
   });
 
-  it.each([UserRole.NORMAL_USER, UserRole.SYSTEM_ADMIN])(
+  it.each([UserRole.NORMAL_USER, UserRole.SYSTEM_ADMIN, UserRole.STORE_OWNER])(
     'creates an admin-managed %s with a bcrypt password hash',
     async (role) => {
       usersRepository.findOneBy.mockResolvedValue(null);
@@ -94,6 +94,7 @@ describe('UsersService', () => {
       select: jest.fn().mockReturnThis(),
       andWhere: jest.fn().mockReturnThis(),
       orderBy: jest.fn().mockReturnThis(),
+      addOrderBy: jest.fn().mockReturnThis(),
       skip: jest.fn().mockReturnThis(),
       take: jest.fn().mockReturnThis(),
       getManyAndCount: jest.fn().mockResolvedValue([
@@ -131,6 +132,7 @@ describe('UsersService', () => {
       ['user.role = :role', { role: UserRole.NORMAL_USER }],
     ]);
     expect(queryBuilder.orderBy.mock.calls[0]).toEqual(['user.email', 'ASC']);
+    expect(queryBuilder.addOrderBy.mock.calls[0]).toEqual(['user.id', 'ASC']);
     expect(queryBuilder.skip.mock.calls).toEqual([[10]]);
     expect(queryBuilder.take.mock.calls).toEqual([[10]]);
     expect(response).toMatchObject({

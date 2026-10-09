@@ -113,6 +113,7 @@ export class RatingsService {
 
     const [stores, total] = await queryBuilder
       .orderBy('store.name', 'ASC')
+      .addOrderBy('store.id', 'ASC')
       .skip((query.page - 1) * query.limit)
       .take(query.limit)
       .getManyAndCount();

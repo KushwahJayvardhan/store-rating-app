@@ -41,6 +41,7 @@ class TestAuthGuard implements CanActivate {
     const roleByToken: Record<string, AuthenticatedUser> = {
       'admin-token': { id: 'admin-id', role: UserRole.SYSTEM_ADMIN },
       'user-token': { id: 'user-id', role: UserRole.NORMAL_USER },
+      'store-owner-token': { id: 'owner-id', role: UserRole.STORE_OWNER },
     };
     const user = roleByToken[token];
 
@@ -142,6 +143,57 @@ describe('UsersController (admin access integration)', () => {
       .expect(400);
 
     expect(usersService.create.mock.calls).toHaveLength(0);
+  });
+
+  it('prevents non-admin users from creating a store owner', async () => {
+    await request(app.getHttpServer())
+      .post('/api/admin/users')
+      .set('Authorization', 'Bearer user-token')
+      .send({
+        name: 'A Valid Person With A Long Name',
+        email: 'owner@example.com',
+        address: 'Address',
+        password: 'Password1!',
+        role: UserRole.STORE_OWNER,
+      })
+      .expect(403);
+
+    expect(usersService.create.mock.calls).toHaveLength(0);
+  });
+
+  it('allows admins to create a store owner', async () => {
+    usersService.create.mockResolvedValue({
+      id: 'owner-id',
+      name: 'A Valid Person With A Long Name',
+      email: 'owner@example.com',
+      address: 'Address',
+      role: UserRole.STORE_OWNER,
+    });
+
+    await request(app.getHttpServer())
+      .post('/api/admin/users')
+      .set('Authorization', 'Bearer admin-token')
+      .send({
+        name: 'A Valid Person With A Long Name',
+        email: 'owner@example.com',
+        address: 'Address',
+        password: 'Password1!',
+        role: UserRole.STORE_OWNER,
+      })
+      .expect(201)
+      .expect({
+        data: {
+          id: 'owner-id',
+          name: 'A Valid Person With A Long Name',
+          email: 'owner@example.com',
+          address: 'Address',
+          role: UserRole.STORE_OWNER,
+        },
+      });
+
+    expect(usersService.create.mock.calls[0][0].role).toBe(
+      UserRole.STORE_OWNER,
+    );
   });
 
   it('returns created user data without a password', async () => {

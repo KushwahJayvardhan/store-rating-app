@@ -62,4 +62,12 @@ describe('store management DTO validation', () => {
     });
     await expect(validate(dto)).resolves.toHaveLength(0);
   });
+
+  it('rejects pages above the maximum', async () => {
+    const dto = plainToInstance(ListStoresDto, { page: 1001 });
+
+    expect((await validate(dto)).map(({ property }) => property)).toContain(
+      'page',
+    );
+  });
 });

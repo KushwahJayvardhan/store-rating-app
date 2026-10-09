@@ -5,28 +5,19 @@ import { CreateAdminUserDto } from './create-admin-user.dto';
 import { ListUsersDto } from './list-users.dto';
 
 describe('user management DTO validation', () => {
-  it('accepts admin and normal user creation but rejects store-owner creation', async () => {
+  it('accepts all administrator-managed user roles', async () => {
     const payload = {
       name: '  A Valid Person With A Long Name  ',
       email: '  PERSON@example.com ',
       address: ' Address ',
       password: 'Password1!',
     };
-    const valid = plainToInstance(CreateAdminUserDto, {
-      ...payload,
-      role: UserRole.SYSTEM_ADMIN,
-    });
-    const invalid = plainToInstance(CreateAdminUserDto, {
-      ...payload,
-      role: UserRole.STORE_OWNER,
-    });
-
-    expect(valid.name).toBe('A Valid Person With A Long Name');
-    expect(valid.email).toBe('person@example.com');
-    await expect(validate(valid)).resolves.toHaveLength(0);
-    expect((await validate(invalid)).map(({ property }) => property)).toContain(
-      'role',
-    );
+    for (const role of Object.values(UserRole)) {
+      const dto = plainToInstance(CreateAdminUserDto, { ...payload, role });
+      expect(dto.name).toBe('A Valid Person With A Long Name');
+      expect(dto.email).toBe('person@example.com');
+      await expect(validate(dto)).resolves.toHaveLength(0);
+    }
   });
 
   it('rejects invalid fields and unsafe sort/filter values', async () => {
@@ -60,5 +51,13 @@ describe('user management DTO validation', () => {
     expect(dto.sortBy).toBe('createdAt');
     expect(dto.sortOrder).toBe('ASC');
     await expect(validate(dto)).resolves.toHaveLength(0);
+  });
+
+  it('rejects pages above the maximum', async () => {
+    const dto = plainToInstance(ListUsersDto, { page: 1001 });
+
+    expect((await validate(dto)).map(({ property }) => property)).toContain(
+      'page',
+    );
   });
 });

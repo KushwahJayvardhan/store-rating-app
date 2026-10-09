@@ -3,13 +3,13 @@ import { IsInt, IsUUID, Max, Min } from 'class-validator';
 
 export class CreateRatingDto {
   @IsUUID()
-  storeId: string;
+  storeId!: string;
 
   @Type(() => Number)
   @IsInt()
   @Min(1)
   @Max(5)
-  value: number;
+  value!: number;
 }
 
 export class UpdateRatingDto {
@@ -17,5 +17,5 @@ export class UpdateRatingDto {
   @IsInt()
   @Min(1)
   @Max(5)
-  value: number;
+  value!: number;
 }

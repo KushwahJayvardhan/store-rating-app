@@ -104,6 +104,7 @@ export class StoresService {
 
     const [stores, total] = await queryBuilder
       .orderBy(STORE_SORT_COLUMNS[query.sortBy], query.sortOrder)
+      .addOrderBy('store.id', 'ASC')
       .skip((query.page - 1) * query.limit)
       .take(query.limit)
       .getManyAndCount();

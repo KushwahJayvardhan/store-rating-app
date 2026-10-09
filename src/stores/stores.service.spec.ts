@@ -153,6 +153,7 @@ describe('StoresService', () => {
       addSelect: jest.fn().mockReturnThis(),
       andWhere: jest.fn().mockReturnThis(),
       orderBy: jest.fn().mockReturnThis(),
+      addOrderBy: jest.fn().mockReturnThis(),
       skip: jest.fn().mockReturnThis(),
       take: jest.fn().mockReturnThis(),
       getManyAndCount: jest.fn().mockResolvedValue([[store], 1]),
@@ -190,6 +191,10 @@ describe('StoresService', () => {
     ]);
     expect(storeQueryBuilder.orderBy.mock.calls[0]).toEqual([
       '(SELECT AVG(rating.value) FROM ratings rating WHERE rating.store_id = store.id)',
+      'ASC',
+    ]);
+    expect(storeQueryBuilder.addOrderBy.mock.calls[0]).toEqual([
+      'store.id',
       'ASC',
     ]);
     expect(storeQueryBuilder.skip.mock.calls).toEqual([[5]]);

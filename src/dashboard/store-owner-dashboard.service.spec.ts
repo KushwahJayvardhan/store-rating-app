@@ -84,6 +84,7 @@ describe('StoreOwnerDashboardService', () => {
       { storeId: 'owner-store' },
     ]);
     expect(ratersQuery.orderBy.mock.calls[0]).toEqual(['user.name', 'ASC']);
+    expect(ratersQuery.addOrderBy.mock.calls[0]).toEqual(['rating.id', 'ASC']);
     expect(ratersQuery.skip.mock.calls).toEqual([[3]]);
     expect(ratersQuery.take.mock.calls).toEqual([[3]]);
     expect(result).toEqual({

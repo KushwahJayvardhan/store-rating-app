@@ -101,6 +101,7 @@ export class UsersService {
 
     const [users, total] = await queryBuilder
       .orderBy(USER_SORT_COLUMNS[query.sortBy], query.sortOrder)
+      .addOrderBy('user.id', 'ASC')
       .skip((query.page - 1) * query.limit)
       .take(query.limit)
       .getManyAndCount();

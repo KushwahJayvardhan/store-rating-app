@@ -18,30 +18,36 @@ import { User } from './user.entity';
 @Check('CHK_RATING_VALUE', '"value" BETWEEN 1 AND 5')
 export class Rating {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @Column({ type: 'smallint', nullable: false })
-  value: number;
+  value!: number;
 
   @Index('IDX_RATINGS_USER_ID')
   @Column({ name: 'user_id', type: 'uuid', nullable: false })
-  userId: string;
+  userId!: string;
 
   @Index('IDX_RATINGS_STORE_ID')
   @Column({ name: 'store_id', type: 'uuid', nullable: false })
-  storeId: string;
+  storeId!: string;
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamptz', precision: 3 })
-  createdAt: Date;
+  createdAt!: Date;
 
   @UpdateDateColumn({ name: 'updated_at', type: 'timestamptz', precision: 3 })
-  updatedAt: Date;
+  updatedAt!: Date;
 
-  @ManyToOne(() => User, (user) => user.ratings, { nullable: false, onDelete: 'CASCADE' })
+  @ManyToOne(() => User, (user) => user.ratings, {
+    nullable: false,
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'user_id' })
-  user: User;
+  user!: User;
 
-  @ManyToOne(() => Store, (store) => store.ratings, { nullable: false, onDelete: 'CASCADE' })
+  @ManyToOne(() => Store, (store) => store.ratings, {
+    nullable: false,
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'store_id' })
-  store: Store;
+  store!: Store;
 }

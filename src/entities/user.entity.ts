@@ -20,14 +20,14 @@ export enum UserRole {
 @Entity({ name: 'users' })
 export class User {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @Column({ type: 'varchar', length: 60, nullable: false })
   @Index('IDX_USERS_NAME')
-  name: string;
+  name!: string;
 
   @Column({ type: 'varchar', length: 255, nullable: false, unique: true })
-  email: string;
+  email!: string;
 
   @Column({
     name: 'password_hash',
@@ -35,11 +35,11 @@ export class User {
     length: 255,
     nullable: false,
   })
-  passwordHash: string;
+  passwordHash!: string;
 
   @Column({ type: 'varchar', length: 400, nullable: false })
   @Index('IDX_USERS_ADDRESS')
-  address: string;
+  address!: string;
 
   @Index('IDX_USERS_ROLE')
   @Column({
@@ -48,18 +48,18 @@ export class User {
     enumName: 'user_role_enum',
     default: UserRole.NORMAL_USER,
   })
-  role: UserRole;
+  role!: UserRole;
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamptz', precision: 3 })
   @Index('IDX_USERS_CREATED_AT')
-  createdAt: Date;
+  createdAt!: Date;
 
   @UpdateDateColumn({ name: 'updated_at', type: 'timestamptz', precision: 3 })
-  updatedAt: Date;
+  updatedAt!: Date;
 
   @OneToOne(() => Store, (store) => store.owner)
-  store: Store | null;
+  store!: Store | null;
 
   @OneToMany(() => Rating, (rating) => rating.user, { cascade: true })
-  ratings: Rating[];
+  ratings!: Rating[];
 }

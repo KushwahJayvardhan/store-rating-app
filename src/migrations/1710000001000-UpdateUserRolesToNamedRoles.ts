@@ -1,8 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class UpdateUserRolesToNamedRoles1710000001000
-  implements MigrationInterface
-{
+export class UpdateUserRolesToNamedRoles1710000001000 implements MigrationInterface {
   name = 'UpdateUserRolesToNamedRoles1710000001000';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
