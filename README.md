@@ -89,6 +89,10 @@ This project is the NestJS backend for the Store Rating App.
   `PATCH /api/ratings/:ratingId`. Store listings include the overall average
   and only the authenticated user's own rating. The ratings table enforces one
   rating per user/store and the 1–5 range.
+- All authenticated roles can change their own password at
+  `PATCH /api/auth/change-password` by providing `currentPassword` and
+  `newPassword`. The endpoint verifies the current password and applies the
+  standard password policy; it accepts no user ID in the request.
 
 ## Useful Commands
 

@@ -15,7 +15,9 @@ export interface JwtTokenSigner {
 }
 
 export interface UserRepository {
-  findOneBy(criteria: Partial<Pick<User, 'email'>>): Promise<User | null>;
+  findOneBy(
+    criteria: Partial<Pick<User, 'id' | 'email'>>,
+  ): Promise<User | null>;
   create(user: Partial<User>): User;
   save(user: User): Promise<User>;
 }

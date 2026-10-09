@@ -1,5 +1,6 @@
 import {
   ConflictException,
+  BadRequestException,
   Inject,
   Injectable,
   UnauthorizedException,
@@ -17,6 +18,7 @@ import type {
 import { AUTH_USER_REPOSITORY, JWT_TOKEN_SIGNER } from './auth.tokens';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
 
 const BCRYPT_ROUNDS = 12;
 
@@ -65,6 +67,29 @@ export class AuthService {
     }
 
     return this.createAuthResponse(user);
+  }
+
+  async changePassword(
+    userId: string,
+    dto: ChangePasswordDto,
+  ): Promise<{ message: string }> {
+    const user = await this.usersRepository.findOneBy({ id: userId });
+    if (!user) {
+      throw new UnauthorizedException('Authenticated user no longer exists');
+    }
+    if (!(await bcrypt.compare(dto.currentPassword, user.passwordHash))) {
+      throw new UnauthorizedException('Current password is incorrect');
+    }
+    if (await bcrypt.compare(dto.newPassword, user.passwordHash)) {
+      throw new BadRequestException(
+        'New password must differ from the current password',
+      );
+    }
+
+    user.passwordHash = await bcrypt.hash(dto.newPassword, BCRYPT_ROUNDS);
+    await this.usersRepository.save(user);
+
+    return { message: 'Password updated successfully' };
   }
 
   private async createAuthResponse(user: User): Promise<AuthResponse> {

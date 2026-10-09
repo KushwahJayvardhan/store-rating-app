@@ -2,6 +2,7 @@ import { plainToInstance } from 'class-transformer';
 import { validate } from 'class-validator';
 import { LoginDto } from './login.dto';
 import { RegisterDto } from './register.dto';
+import { ChangePasswordDto } from './change-password.dto';
 
 describe('authentication DTO validation', () => {
   it('normalizes registration email and accepts valid registration data', async () => {
@@ -70,5 +71,30 @@ describe('authentication DTO validation', () => {
     expect(errors.map(({ property }) => property)).toEqual(
       expect.arrayContaining(['email', 'password']),
     );
+  });
+
+  it('requires both current password and a valid new password', async () => {
+    const dto = plainToInstance(ChangePasswordDto, {
+      currentPassword: '',
+      newPassword: 'weak',
+      userId: 'another-user',
+    });
+
+    const errors = await validate(dto, {
+      whitelist: true,
+      forbidNonWhitelisted: true,
+    });
+    expect(errors.map(({ property }) => property)).toEqual(
+      expect.arrayContaining(['currentPassword', 'newPassword', 'userId']),
+    );
+  });
+
+  it('accepts a new password matching the established password requirements', async () => {
+    const dto = plainToInstance(ChangePasswordDto, {
+      currentPassword: 'CurrentPass1!',
+      newPassword: 'NewPassword2!',
+    });
+
+    await expect(validate(dto)).resolves.toHaveLength(0);
   });
 });

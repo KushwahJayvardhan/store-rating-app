@@ -92,6 +92,21 @@ let AuthService = class AuthService {
         }
         return this.createAuthResponse(user);
     }
+    async changePassword(userId, dto) {
+        const user = await this.usersRepository.findOneBy({ id: userId });
+        if (!user) {
+            throw new common_1.UnauthorizedException('Authenticated user no longer exists');
+        }
+        if (!(await bcrypt.compare(dto.currentPassword, user.passwordHash))) {
+            throw new common_1.UnauthorizedException('Current password is incorrect');
+        }
+        if (await bcrypt.compare(dto.newPassword, user.passwordHash)) {
+            throw new common_1.BadRequestException('New password must differ from the current password');
+        }
+        user.passwordHash = await bcrypt.hash(dto.newPassword, BCRYPT_ROUNDS);
+        await this.usersRepository.save(user);
+        return { message: 'Password updated successfully' };
+    }
     async createAuthResponse(user) {
         const payload = {
             sub: user.id,
