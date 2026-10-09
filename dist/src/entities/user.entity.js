@@ -28,7 +28,7 @@ let User = class User {
     role;
     createdAt;
     updatedAt;
-    stores;
+    store;
     ratings;
 };
 exports.User = User;
@@ -38,6 +38,7 @@ __decorate([
 ], User.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'varchar', length: 60, nullable: false }),
+    (0, typeorm_1.Index)('IDX_USERS_NAME'),
     __metadata("design:type", String)
 ], User.prototype, "name", void 0);
 __decorate([
@@ -45,11 +46,17 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "email", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ name: 'password_hash', type: 'varchar', length: 255, nullable: false }),
+    (0, typeorm_1.Column)({
+        name: 'password_hash',
+        type: 'varchar',
+        length: 255,
+        nullable: false,
+    }),
     __metadata("design:type", String)
 ], User.prototype, "passwordHash", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'varchar', length: 400, nullable: false }),
+    (0, typeorm_1.Index)('IDX_USERS_ADDRESS'),
     __metadata("design:type", String)
 ], User.prototype, "address", void 0);
 __decorate([
@@ -64,6 +71,7 @@ __decorate([
 ], User.prototype, "role", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)({ name: 'created_at', type: 'timestamptz', precision: 3 }),
+    (0, typeorm_1.Index)('IDX_USERS_CREATED_AT'),
     __metadata("design:type", Date)
 ], User.prototype, "createdAt", void 0);
 __decorate([
@@ -71,9 +79,9 @@ __decorate([
     __metadata("design:type", Date)
 ], User.prototype, "updatedAt", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => store_entity_1.Store, (store) => store.owner, { cascade: true }),
-    __metadata("design:type", Array)
-], User.prototype, "stores", void 0);
+    (0, typeorm_1.OneToOne)(() => store_entity_1.Store, (store) => store.owner),
+    __metadata("design:type", Object)
+], User.prototype, "store", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(() => rating_entity_1.Rating, (rating) => rating.user, { cascade: true }),
     __metadata("design:type", Array)

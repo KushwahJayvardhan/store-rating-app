@@ -14,6 +14,6 @@ export declare class User {
     role: UserRole;
     createdAt: Date;
     updatedAt: Date;
-    stores: Store[];
+    store: Store | null;
     ratings: Rating[];
 }

@@ -4,6 +4,7 @@ import {
   Entity,
   Index,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -22,15 +23,22 @@ export class User {
   id: string;
 
   @Column({ type: 'varchar', length: 60, nullable: false })
+  @Index('IDX_USERS_NAME')
   name: string;
 
   @Column({ type: 'varchar', length: 255, nullable: false, unique: true })
   email: string;
 
-  @Column({ name: 'password_hash', type: 'varchar', length: 255, nullable: false })
+  @Column({
+    name: 'password_hash',
+    type: 'varchar',
+    length: 255,
+    nullable: false,
+  })
   passwordHash: string;
 
   @Column({ type: 'varchar', length: 400, nullable: false })
+  @Index('IDX_USERS_ADDRESS')
   address: string;
 
   @Index('IDX_USERS_ROLE')
@@ -43,13 +51,14 @@ export class User {
   role: UserRole;
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamptz', precision: 3 })
+  @Index('IDX_USERS_CREATED_AT')
   createdAt: Date;
 
   @UpdateDateColumn({ name: 'updated_at', type: 'timestamptz', precision: 3 })
   updatedAt: Date;
 
-  @OneToMany(() => Store, (store) => store.owner, { cascade: true })
-  stores: Store[];
+  @OneToOne(() => Store, (store) => store.owner)
+  store: Store | null;
 
   @OneToMany(() => Rating, (rating) => rating.user, { cascade: true })
   ratings: Rating[];

@@ -4,7 +4,7 @@ import {
   Entity,
   Index,
   JoinColumn,
-  ManyToOne,
+  OneToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -28,17 +28,20 @@ export class Store {
   @Column({ type: 'varchar', length: 400, nullable: false })
   address: string;
 
-  @Index('IDX_STORES_OWNER_ID')
   @Column({ name: 'owner_id', type: 'uuid', nullable: false })
   ownerId: string;
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamptz', precision: 3 })
+  @Index('IDX_STORES_CREATED_AT')
   createdAt: Date;
 
   @UpdateDateColumn({ name: 'updated_at', type: 'timestamptz', precision: 3 })
   updatedAt: Date;
 
-  @ManyToOne(() => User, (user) => user.stores, { nullable: false, onDelete: 'CASCADE' })
+  @OneToOne(() => User, (user) => user.store, {
+    nullable: false,
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'owner_id' })
   owner: User;
 

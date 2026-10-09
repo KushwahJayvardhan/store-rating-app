@@ -44,12 +44,12 @@ __decorate([
     __metadata("design:type", String)
 ], Store.prototype, "address", void 0);
 __decorate([
-    (0, typeorm_1.Index)('IDX_STORES_OWNER_ID'),
     (0, typeorm_1.Column)({ name: 'owner_id', type: 'uuid', nullable: false }),
     __metadata("design:type", String)
 ], Store.prototype, "ownerId", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)({ name: 'created_at', type: 'timestamptz', precision: 3 }),
+    (0, typeorm_1.Index)('IDX_STORES_CREATED_AT'),
     __metadata("design:type", Date)
 ], Store.prototype, "createdAt", void 0);
 __decorate([
@@ -57,7 +57,10 @@ __decorate([
     __metadata("design:type", Date)
 ], Store.prototype, "updatedAt", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => user_entity_1.User, (user) => user.stores, { nullable: false, onDelete: 'CASCADE' }),
+    (0, typeorm_1.OneToOne)(() => user_entity_1.User, (user) => user.store, {
+        nullable: false,
+        onDelete: 'CASCADE',
+    }),
     (0, typeorm_1.JoinColumn)({ name: 'owner_id' }),
     __metadata("design:type", user_entity_1.User)
 ], Store.prototype, "owner", void 0);

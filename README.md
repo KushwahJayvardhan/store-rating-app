@@ -64,6 +64,24 @@ This project is the NestJS backend for the Store Rating App.
   `/api/authorization-demo/store-owner/stores/:storeId/ratings`.
 - The store-owner example checks `storeId` against the authenticated owner's ID
   and returns 404 for stores they do not own.
+- Admin user management is available under `/api/admin/users` to
+  `SYSTEM_ADMIN` accounts. The list endpoint supports `name`, `email`, `address`,
+  and `role` filters, `page`/`limit` pagination, and `sortBy`/`sortOrder`
+  sorting. User creation accepts `NORMAL_USER` or `SYSTEM_ADMIN`; passwords are
+  hashed and never included in responses. Apply pending schema changes with
+  `npm run migration:run`.
+- Admin store management is available under `/api/admin/stores` to
+  `SYSTEM_ADMIN` accounts. Store creation requires an existing `STORE_OWNER`;
+  each owner may own one store. Store lists support name, email, and address
+  filters, whitelisted sorting by name, email, address, rating, or createdAt,
+  and `page`/`limit` pagination. Average ratings are calculated from ratings
+  records and cannot be supplied by clients. Apply pending schema changes with
+  `npm run migration:run`.
+- Normal users can view stores at `GET /api/stores`, submit ratings with
+  `POST /api/ratings`, and update their own ratings with
+  `PATCH /api/ratings/:ratingId`. Store listings include the overall average
+  and only the authenticated user's own rating. The ratings table enforces one
+  rating per user/store and the 1–5 range.
 
 ## Useful Commands
 

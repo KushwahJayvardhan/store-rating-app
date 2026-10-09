@@ -49,6 +49,9 @@ const auth_module_1 = require("./auth/auth.module");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const health_module_1 = require("./health/health.module");
+const ratings_module_1 = require("./ratings/ratings.module");
+const stores_module_1 = require("./stores/stores.module");
+const users_module_1 = require("./users/users.module");
 dotenv.config();
 const isDatabaseConfigured = Boolean(process.env.DB_HOST) ||
     Boolean(process.env.DB_NAME) ||
@@ -85,7 +88,9 @@ exports.AppModule = AppModule = __decorate([
                     }),
                 ]
                 : []),
-            ...(isDatabaseConfigured ? [auth_module_1.AuthModule] : []),
+            ...(isDatabaseConfigured
+                ? [auth_module_1.AuthModule, users_module_1.UsersModule, stores_module_1.StoresModule, ratings_module_1.RatingsModule]
+                : []),
             health_module_1.HealthModule,
         ],
         controllers: [app_controller_1.AppController],
