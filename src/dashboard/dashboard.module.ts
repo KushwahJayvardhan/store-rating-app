@@ -6,10 +6,11 @@ import { Store } from '../entities/store.entity';
 import { User } from '../entities/user.entity';
 import { DashboardController } from './dashboard.controller';
 import { DashboardService } from './dashboard.service';
+import { StoreOwnerDashboardService } from './store-owner-dashboard.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User, Store, Rating]), AuthModule],
   controllers: [DashboardController],
-  providers: [DashboardService],
+  providers: [DashboardService, StoreOwnerDashboardService],
 })
 export class DashboardModule {}

@@ -72,6 +72,11 @@ This project is the NestJS backend for the Store Rating App.
   `npm run migration:run`.
 - System administrators can view database-count dashboard statistics at
   `GET /api/admin/dashboard`.
+- Store owners can view their own rating summary and paginated rating
+  submitters at `GET /api/owner/dashboard`. The store is always resolved from
+  the authenticated owner's ID; clients cannot select another store. Rater
+  results support pagination and sorting by name, email, rating, and submission
+  date.
 - Admin store management is available under `/api/admin/stores` to
   `SYSTEM_ADMIN` accounts. Store creation requires an existing `STORE_OWNER`;
   each owner may own one store. Store lists support name, email, and address
