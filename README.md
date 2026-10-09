@@ -70,6 +70,8 @@ This project is the NestJS backend for the Store Rating App.
   sorting. User creation accepts `NORMAL_USER` or `SYSTEM_ADMIN`; passwords are
   hashed and never included in responses. Apply pending schema changes with
   `npm run migration:run`.
+- System administrators can view database-count dashboard statistics at
+  `GET /api/admin/dashboard`.
 - Admin store management is available under `/api/admin/stores` to
   `SYSTEM_ADMIN` accounts. Store creation requires an existing `STORE_OWNER`;
   each owner may own one store. Store lists support name, email, and address

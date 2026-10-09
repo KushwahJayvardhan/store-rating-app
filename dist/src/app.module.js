@@ -48,6 +48,7 @@ const path_1 = require("path");
 const auth_module_1 = require("./auth/auth.module");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
+const dashboard_module_1 = require("./dashboard/dashboard.module");
 const health_module_1 = require("./health/health.module");
 const ratings_module_1 = require("./ratings/ratings.module");
 const stores_module_1 = require("./stores/stores.module");
@@ -89,7 +90,7 @@ exports.AppModule = AppModule = __decorate([
                 ]
                 : []),
             ...(isDatabaseConfigured
-                ? [auth_module_1.AuthModule, users_module_1.UsersModule, stores_module_1.StoresModule, ratings_module_1.RatingsModule]
+                ? [auth_module_1.AuthModule, users_module_1.UsersModule, stores_module_1.StoresModule, ratings_module_1.RatingsModule, dashboard_module_1.DashboardModule]
                 : []),
             health_module_1.HealthModule,
         ],

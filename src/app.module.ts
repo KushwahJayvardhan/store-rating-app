@@ -6,6 +6,7 @@ import { join } from 'path';
 import { AuthModule } from './auth/auth.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { DashboardModule } from './dashboard/dashboard.module';
 import { HealthModule } from './health/health.module';
 import { RatingsModule } from './ratings/ratings.module';
 import { StoresModule } from './stores/stores.module';
@@ -51,7 +52,7 @@ const isDatabaseConfigured =
         ]
       : []),
     ...(isDatabaseConfigured
-      ? [AuthModule, UsersModule, StoresModule, RatingsModule]
+      ? [AuthModule, UsersModule, StoresModule, RatingsModule, DashboardModule]
       : []),
     HealthModule,
   ],
